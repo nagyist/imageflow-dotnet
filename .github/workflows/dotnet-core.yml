@@ -90,7 +90,7 @@ jobs:
         if: github.event_name == 'release'
 
       - name: Test with ${{ matrix.SystemTextJsonVersion }} and ${{ matrix.RecyclableMemoryStreamVersion }}
-        if: matrix.SystemTextJsonVersion != null && matrix.RecyclableMemoryStreamVersion != null
+        if: matrix.SystemTextJsonVersion != null || matrix.RecyclableMemoryStreamVersion != null
         run: |
           dotnet test ${{ env.CORE_SLN }} -p:SystemTextJsonVersion=${{ matrix.SystemTextJsonVersion }} -p:RecyclableMemoryStreamVersion=${{ matrix.RecyclableMemoryStreamVersion }} -c Release
 
@@ -117,7 +117,7 @@ jobs:
           path: TestResults/
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         if: matrix.coverage
         with:
           files: ./**/coverage.opencover.xml
@@ -173,7 +173,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: nowsprinting/check-version-format-action@v3
+      - uses: nowsprinting/check-version-format-action@v4
         id: version
         with:
           prefix: "v"
